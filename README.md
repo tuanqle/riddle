@@ -21,6 +21,17 @@ to measure Z-gallon of water.
    docker run -it riddle-app
 ```
 
+### Input
+
+The app takes 3 values on 1 line separated by space.
+
+__Example__
+```
+$docker run -it riddle-app
+Water Jug Riddle
+Enter value for X, Y, and Z (where X,Y,Z is number of gallon): 3 5 2
+```
+
 #### What it does?
 
 As the program starts, it asks user to input 3 integer values for X, Y, and Z which represent
