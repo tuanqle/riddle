@@ -65,7 +65,7 @@ func transfer(x, y Jug) ([]Jug, error) {
 
 func validate(x, y, z int64) error {
 	if x <= 0 || y <= 0 || z <= 0 {
-		return fmt.Errorf("volume can't be less than 1")
+		return fmt.Errorf("number of gallons can't be less than 1")
 	}
 	if x == y && z != x {
 		return fmt.Errorf("Jug X and Y are the same")
