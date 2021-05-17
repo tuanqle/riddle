@@ -71,14 +71,6 @@ func validate(x, y, z int64) error {
 		return fmt.Errorf("Jug X and Y are the same")
 	}
 
-	largest := x
-	if x < y {
-		largest = y
-	}
-
-	if z > largest {
-		return fmt.Errorf("Z amount is larger than the largest Jug can hold")
-	}
 	return nil
 }
 

@@ -6,7 +6,7 @@ to measure Z-gallon of water.
 ### Installation
 
 ```
-    git clone https://github.com/tuanqle/quizes/riddle.git
+    git clone https://github.com/tuanqle/riddle.git
 ```
 
 ### Building

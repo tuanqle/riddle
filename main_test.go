@@ -118,9 +118,6 @@ func TestValidate(t *testing.T) {
 	if validate(2, 2, 1) == nil {
 		failed(t, "same bucket size", true, validate(2, 2, 1) != nil)
 	}
-	if validate(3, 5, 7) == nil {
-		failed(t, "Z larger than bucket", true, validate(3, 5, 7) != nil)
-	}
 	if validate(3, 5, 2) != nil {
 		failed(t, "valid input", true, validate(3, 5, 2) == nil)
 	}
