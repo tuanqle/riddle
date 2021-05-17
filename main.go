@@ -100,7 +100,12 @@ type result struct {
 	yVal int64
 }
 
-func riddle(jugs []Jug, z int64, visited map[key]bool) ([]result, error) {
+type response struct {
+	OK      bool
+	results []result
+}
+
+func riddle(jugs []Jug, z int64, visited map[key]bool) (*response, error) {
 	var (
 		x, y = getXYValue(jugs)
 		k    = key{
@@ -116,7 +121,9 @@ func riddle(jugs []Jug, z int64, visited map[key]bool) ([]result, error) {
 	visited[k] = true
 	for _, j := range jugs {
 		if j.value == z {
-			return []result{}, nil
+			return &response{
+				OK: true,
+			}, nil
 		}
 	}
 
@@ -132,23 +139,26 @@ func riddle(jugs []Jug, z int64, visited map[key]bool) ([]result, error) {
 			if updated == nil {
 				continue
 			}
-			results, err := riddle(updated, z, visited)
+			resp, err := riddle(updated, z, visited)
 			if err != nil {
 				return nil, err
 			}
-			if results != nil {
+			if resp != nil && resp.OK {
 				x, y := getXYValue(updated)
 				str := printStage(Action(act), jugs[i], jugs[(i+1)%2])
-				results = append(results, result{
+				resp.results = append(resp.results, result{
 					msg:  str,
 					xVal: x,
 					yVal: y,
 				})
-				return results, nil
+				return resp, nil
 			}
+
 		}
 	}
-	return nil, fmt.Errorf("No Solution")
+	return &response{
+		OK: false,
+	}, nil
 }
 
 type key struct {
@@ -184,12 +194,21 @@ func main() {
 	}
 
 	visited := make(map[key]bool)
-	results, err := riddle(jugs, z, visited)
+	resp, err := riddle(jugs, z, visited)
 	bailIf(err)
 
-	fmt.Println("\n\t\t\t\t\tJug X\t\tJug Y")
-	for i := len(results) - 1; i > -1; i-- {
-		r := results[i]
-		fmt.Printf("%30s\t\t%5d\t\t%5d\n", r.msg, r.xVal, r.yVal)
+	if resp == nil {
+		bailIf(fmt.Errorf("response empty"))
+	}
+
+	if !resp.OK {
+		fmt.Println("No Solution")
+	} else {
+		results := resp.results
+		fmt.Println("\n\t\t\t\t\tJug X\t\tJug Y")
+		for i := len(results) - 1; i > -1; i-- {
+			r := results[i]
+			fmt.Printf("%30s\t\t%5d\t\t%5d\n", r.msg, r.xVal, r.yVal)
+		}
 	}
 }

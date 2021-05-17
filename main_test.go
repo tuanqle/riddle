@@ -146,8 +146,6 @@ func TestGetXYValue(t *testing.T) {
 func TestRiddle(t *testing.T) {
 	X, Y := setupJugs()
 	v := make(map[key]bool)
-	s, err := riddle([]Jug{X, Y}, 4, v)
-	errFatal(t, err)
 	expected := []result{
 		{
 			msg:  "Transfer from Jug Y to Jug X",
@@ -206,7 +204,16 @@ func TestRiddle(t *testing.T) {
 		},
 	}
 
-	for i, v := range s {
+	s, err := riddle([]Jug{X, Y}, 4, v)
+	errFatal(t, err)
+	if s == nil {
+		fatal(t, "response not empty", true, s != nil)
+	}
+	if !s.OK {
+		fatal(t, "no response", true, s.OK)
+	}
+
+	for i, v := range s.results {
 		if expected[i] != v {
 			failed(t, "response", expected[i], v)
 		}
